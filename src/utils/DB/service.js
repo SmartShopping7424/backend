@@ -10,7 +10,7 @@ module.exports = {
     try {
       return await query(query_string);
     } catch (e) {
-      console.log("===>", e);
+      console.log("SQL Error ====> ", e);
     } finally {
       connection.end();
     }

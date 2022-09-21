@@ -1,6 +1,11 @@
 const DBService = require("../../utils/DB/service");
 const { parseResponse } = require("../../utils/helper");
-const { success, failure } = require("../../utils/response");
+const {
+  success,
+  failure,
+  validation_faliure,
+} = require("../../utils/response");
+const { mobile_validator } = require("../../validators/login/mobile_validator");
 const { check_mobile_in_shop, check_mobile_in_customer } = require("./queries");
 
 module.exports.mobile = async (req, res) => {
@@ -11,19 +16,20 @@ module.exports.mobile = async (req, res) => {
   if (Object.getOwnPropertyNames(inputs).length == 0) {
     return failure(
       400,
-      "Invalid payload, Request should contain atleaast one attribute.",
+      "Invalid payload, Request should contain atleast one attribute.",
       res
     );
   }
 
-  // if mode is invalid in payload
-  if (!inputs.mode || !(inputs.mode == "shop" || inputs.mode == "customer")) {
-    return failure(400, "Invalid mode in payload.", res);
-  }
-
-  // if mobile is invalid in payload
-  if (inputs.mobile.length != 10) {
-    return failure(400, "Invalid mobile number in payload.", res);
+  // validate payload
+  const errors = await mobile_validator(inputs);
+  if (Object.keys(errors).length > 0 && errors.constructor === Object) {
+    return validation_faliure(
+      422,
+      "The request should not contain invalid data.",
+      errors,
+      res
+    );
   }
 
   // check number in database

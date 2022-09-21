@@ -60,4 +60,16 @@ module.exports = {
     // return response
     return res.send(obj);
   },
+
+  // validation faliure
+  validation_faliure(code = 402, message, errors, res) {
+    const obj = {
+      code: code,
+      message: message,
+      errors: errors,
+    };
+
+    // return response
+    return res.send(obj);
+  },
 };
