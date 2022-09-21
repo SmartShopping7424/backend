@@ -14,5 +14,5 @@ app.use(shop_routes);
 app.use(login_router);
 
 app.listen(80, () => {
-  console.log("Server is running at port 3000");
+  console.log("Server is running at port 80");
 });
