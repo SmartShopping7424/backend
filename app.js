@@ -13,6 +13,6 @@ app.use(bp.urlencoded({ extended: true }));
 app.use(shop_routes);
 app.use(login_router);
 
-app.listen(3000, () => {
-  console.log("Server is running at port 3000");
+app.listen(80, () => {
+  console.log("Server is running at port 80");
 });
