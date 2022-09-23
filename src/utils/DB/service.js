@@ -1,6 +1,14 @@
-const dbConfig = require("../../config/db");
 const mysql = require("mysql");
 const util = require("util");
+
+// database credentials
+const dbConfig = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB,
+  port: process.env.DB_PORT,
+};
 
 module.exports = {
   // execute mysql query

@@ -1,8 +1,9 @@
 const express = require("express");
 const body_parser = require("body-parser");
 const app = express();
+require("dotenv").config();
 
-const SERVER_PORT = 3000;
+const SERVER_PORT = process.env.SERVER_PORT;
 
 // login route
 const login_route = require("./src/handlers/login/login_handler");
