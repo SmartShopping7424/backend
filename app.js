@@ -2,18 +2,18 @@ const express = require("express");
 const body_parser = require("body-parser");
 const app = express();
 
+// default server port
 const SERVER_PORT = 3000;
 
-// login route
+// routes
 const login_route = require("./src/handlers/login/login_handler");
-// shop route
 const shop_route = require("./src/handlers/shop/shop_handler");
 
 // request body parser
 app.use(body_parser.json());
 app.use(body_parser.urlencoded({ extended: true }));
 
-// use of routes
+// use routes
 app.use(login_route);
 app.use(shop_route);
 

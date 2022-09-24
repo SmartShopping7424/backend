@@ -1,12 +1,18 @@
-const DBService = require("../../utils/DB/service");
-const { parseResponse } = require("../../utils/helper");
+const DBService = require("../../../utils/DB/service");
+const { parseResponse, generateNumber } = require("../../../utils/helper");
 const {
   success,
   failure,
   validation_faliure,
-} = require("../../utils/response");
-const { mobile_validator } = require("../../validators/login/mobile_validator");
-const { check_mobile_in_shop, check_mobile_in_customer } = require("./queries");
+} = require("../../../utils/response");
+const {
+  mobile_validator,
+} = require("../../../validators/login/mobile/mobile_validator");
+const {
+  check_mobile_in_shop,
+  check_mobile_in_customer,
+  insert_otp,
+} = require("./queries");
 
 module.exports.mobile = async (req, res) => {
   // assign inputs
@@ -45,6 +51,13 @@ module.exports.mobile = async (req, res) => {
   if (result.exist == 0) {
     return failure(400, "Mobile number does not exist.", res);
   }
+
+  // generate otp
+  const otp = "1234";
+  // const otp = generateNumber(4);
+
+  // insert otp in table
+  await DBService.executeStatement(insert_otp(inputs.mobile, otp));
 
   // return success
   return success(200, "OTP has been sent successfully.", res);

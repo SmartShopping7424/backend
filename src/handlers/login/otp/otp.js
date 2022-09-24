@@ -1,9 +1,14 @@
+const DBService = require("../../../utils/DB/service");
+const { parseResponse } = require("../../../utils/helper");
 const {
   success,
   failure,
   validation_faliure,
-} = require("../../utils/response");
-const { otp_validator } = require("../../validators/login/otp_validator");
+} = require("../../../utils/response");
+const {
+  otp_validator,
+} = require("../../../validators/login/otp/otp_validator");
+const { fetch_otp } = require("./queries");
 
 module.exports.otp = async (req, res) => {
   // assign inputs
@@ -29,11 +34,21 @@ module.exports.otp = async (req, res) => {
     );
   }
 
-  // return failure if otp is incorrect
-  if (inputs.otp != "1234") {
+  // fetch otp from database
+  const result = parseResponse(
+    await DBService.executeStatement(fetch_otp(inputs.mobile))
+  );
+
+  // if no result found return faliure
+  if (!result) {
+    return failure(400, "Invalid request.", res);
+  }
+
+  // if otp does not match return faliure
+  if (result.otp != inputs.otp) {
     return failure(400, "Invalid otp.", res);
   }
 
-  // return success if otp matched
+  // if otp match return success
   return success(200, "Login successful.", res);
 };
