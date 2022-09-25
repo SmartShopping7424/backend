@@ -6,11 +6,15 @@ const {
   validation_faliure,
 } = require("../../../../utils/response");
 const {
-  login_validator,
-} = require("../../../../validators/shop/employees/login/login_validator");
-const { check_shop_id, fetch_employee_data } = require("./queries");
+  get_product_validator,
+} = require("../../../../validators/shop/employees/get_product/get_product_validator");
+const {
+  check_shop_id,
+  check_employee_id_against_shop,
+  fetch_product,
+} = require("./queries");
 
-module.exports.login = async (req, res) => {
+module.exports.get_product = async (req, res) => {
   // assign inputs
   const inputs = req.body;
 
@@ -24,7 +28,7 @@ module.exports.login = async (req, res) => {
   }
 
   // validate payload
-  const errors = await login_validator(inputs);
+  const errors = await get_product_validator(inputs);
   if (Object.keys(errors).length > 0 && errors.constructor === Object) {
     return validation_faliure(
       422,
@@ -44,32 +48,23 @@ module.exports.login = async (req, res) => {
     return failure(400, "Invalid shop id.", res);
   }
 
-  // fetch employee data against shop
+  // check if employee id already exist against shop
   result = parseResponse(
     await DBService.executeStatement(
-      fetch_employee_data(inputs.employee_id, inputs.shop_id)
+      check_employee_id_against_shop(inputs.employee_id, inputs.shop_id)
     )
   );
 
-  // if employee id does not exist against shop
-  if (!result) {
-    return failure(
-      400,
-      "Invalid, employee_id does not exist against the shop.",
-      res
-    );
+  // if employee id does not exist
+  if (result.exist == 0) {
+    return failure(400, "Invalid employee id.", res);
   }
 
-  // if employee type not match
-  if (result.type != inputs.type) {
-    return failure(400, "Invalid type.", res);
-  }
-
-  // if employee password not match
-  if (result.password != inputs.password) {
-    return failure(400, "Invalid password.", res);
-  }
+  // fetch product
+  result = parseResponse(
+    await DBService.executeStatement(fetch_product(inputs.shop_id))
+  );
 
   // return success
-  return success(200, "Login successful.", res);
+  return success(200, result, res);
 };
