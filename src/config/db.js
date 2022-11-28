@@ -1,4 +1,3 @@
-// db credentials
 const dbConfig = {
   host: "68.178.166.24",
   user: "devops_abhay",
