@@ -17,6 +17,7 @@ app.use(body_parser.urlencoded({ extended: true }));
 app.use(login_route);
 app.use(shop_route);
 
+
 // app server
 app.listen(SERVER_PORT, () => {
   console.log(`Server is running on port ${SERVER_PORT}`);
