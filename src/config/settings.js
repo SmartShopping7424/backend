@@ -17,6 +17,7 @@ const config = {
       1: "Pack",
     },
   },
+  page_size: 10,
 };
 
 module.exports = config;

@@ -13,6 +13,7 @@ const {
   check_employee_id_against_shop,
   fetch_product,
 } = require("./queries");
+const config = require("../../../../config/settings");
 
 module.exports.get_product = async (req, res) => {
   // assign inputs
@@ -60,11 +61,43 @@ module.exports.get_product = async (req, res) => {
     return failure(400, "Invalid employee id.", res);
   }
 
+  // intilize page and page size
+  let initial_page = 1;
+  let page_size = config.page_size;
+  let page = initial_page;
+
+  // fetch page from query parameter
+  if (req.query) {
+    if (req.query.page) {
+      page = req.query.page;
+    }
+  }
+
+  // calculate limit and offset for pagination
+  const limit = page_size;
+  const offset = page_size * page - page_size;
+
   // fetch product
   result = parseResponse(
-    await DBService.executeStatement(fetch_product(inputs.shop_id))
+    await DBService.executeStatement(
+      fetch_product(inputs.shop_id, limit, offset)
+    )
   );
 
+  // pagination data
+  const meta = {
+    pagination: {
+      current_page: parseInt(page),
+      count: result.length
+        ? result.length
+        : Object.getOwnPropertyNames(result).length == 0
+        ? 0
+        : 1,
+      starts_from: initial_page,
+      per_page: parseInt(limit),
+    },
+  };
+
   // return success
-  return success(200, result, res);
+  return success(200, result, res, meta);
 };

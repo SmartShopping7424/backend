@@ -1,12 +1,13 @@
 module.exports = {
   // success response
-  success(code, input_data, res) {
+  success(code, input_data, res, meta = false) {
     let obj = {};
     // if data is array
     if (Array.isArray(input_data)) {
       obj = {
         code: code,
         data: input_data,
+        meta: meta,
       };
     }
 
@@ -15,6 +16,7 @@ module.exports = {
       obj = {
         code: code,
         data: input_data,
+        meta: meta,
       };
     }
 
@@ -23,6 +25,7 @@ module.exports = {
       obj = {
         code: code,
         message: input_data,
+        meta: meta,
       };
     }
 

@@ -10,7 +10,7 @@ module.exports = {
   },
 
   // fetch product data
-  fetch_product(shop_id) {
-    return `SELECT * FROM ${shop_id} LIMIT 10;`;
+  fetch_product(shop_id, limit, offset) {
+    return `SELECT * FROM ${shop_id} LIMIT ${limit} OFFSET ${offset};`;
   },
 };
