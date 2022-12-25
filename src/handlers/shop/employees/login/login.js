@@ -1,4 +1,6 @@
 const DBService = require("../../../../utils/DB/service");
+const jwt = require("jsonwebtoken");
+const config = require("../../../../config/settings");
 const { parseResponse } = require("../../../../utils/helper");
 const {
   success,
@@ -70,6 +72,22 @@ module.exports.login = async (req, res) => {
     return failure(400, "Invalid password.", res);
   }
 
-  // return success
-  return success(200, "Login successful.", res);
+  // if all matches then generate the jwt token
+  jwt.sign(
+    inputs,
+    config.secret_key,
+    { expiresIn: config.key_expiry },
+    (err, token) => {
+      if (err) {
+        console.log("Error while jwt sign ::: ", err);
+        return failure(400, "Internal server error, Try again later.", res);
+      } else {
+        const response = {
+          message: "Login successful.",
+          token: token,
+        };
+        return success(200, response, res);
+      }
+    }
+  );
 };

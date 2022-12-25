@@ -6,7 +6,7 @@
 module.exports.otp_validator = async (input) => {
   // define variables
   var errors = {};
-  var required = ["mobile", "otp"];
+  var required = ["mobile", "otp", "mode"];
 
   // check if any require key is missing from input payload
   required.map((key) => {
@@ -34,6 +34,11 @@ module.exports.otp_validator = async (input) => {
         case "otp":
           if (value.length == 0) {
             errors[key].push("Invalid otp in the payload.");
+          }
+          break;
+        case "mode":
+          if (!(value == "shop" || value == "customer")) {
+            errors[key].push("Invalid mode in the payload.");
           }
           break;
         default:

@@ -1,4 +1,6 @@
 const config = {
+  secret_key: "dragmart",
+  key_expiry: "30d",
   shop_employees: {
     type: {
       0: "Maintenance",
