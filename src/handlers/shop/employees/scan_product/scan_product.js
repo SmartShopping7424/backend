@@ -67,11 +67,6 @@ module.exports.scan_product = async (req, res) => {
     )
   );
 
-  // if no result found
-  if (!result) {
-    return success(200, {}, res);
-  }
-
   // return success
   return success(200, result, res);
 };

@@ -4,7 +4,7 @@ module.exports = {
     const data = query_data.map((item) => ({ ...item }));
     // if data array length is 0
     if (data.length == 0) {
-      return null;
+      return {};
     }
     // if data array is greater than 1
     else if (data.length > 1) {
