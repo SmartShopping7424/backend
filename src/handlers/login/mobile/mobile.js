@@ -1,5 +1,5 @@
 const DBService = require("../../../utils/DB/service");
-const { parseResponse, generateNumber } = require("../../../utils/helper");
+const { generateNumber, parseResponse } = require("../../../utils/helper");
 const {
   success,
   failure,
@@ -8,11 +8,7 @@ const {
 const {
   mobile_validator,
 } = require("../../../validators/login/mobile/mobile_validator");
-const {
-  check_mobile_in_shop,
-  check_mobile_in_customer,
-  insert_otp,
-} = require("./queries");
+const { insert_otp, check_mobile_in_shop } = require("./queries");
 
 module.exports.mobile = async (req, res) => {
   // assign inputs
@@ -38,18 +34,20 @@ module.exports.mobile = async (req, res) => {
     );
   }
 
-  // check number in database
-  const result = parseResponse(
-    await DBService.executeStatement(
-      inputs.mode == "shop"
-        ? check_mobile_in_shop(inputs.mobile)
-        : check_mobile_in_customer(inputs.mobile)
-    )
-  );
+  // if mode is shop then check mobile number is new
+  if (inputs.mode == "shop") {
+    const result = parseResponse(
+      await DBService.executeStatement(check_mobile_in_shop(inputs.mobile))
+    );
 
-  // if number does not exist
-  if (result.exist == 0) {
-    return failure(400, "Mobile number does not exist.", res);
+    // if mobile number is new
+    if (result.exist == 0) {
+      return failure(
+        400,
+        "You are a new user. Please contact through administrator.",
+        res
+      );
+    }
   }
 
   // generate otp

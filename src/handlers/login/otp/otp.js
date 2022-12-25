@@ -1,4 +1,6 @@
 const DBService = require("../../../utils/DB/service");
+const jwt = require("jsonwebtoken");
+const config = require("../../../config/settings");
 const { parseResponse } = require("../../../utils/helper");
 const {
   success,
@@ -8,7 +10,7 @@ const {
 const {
   otp_validator,
 } = require("../../../validators/login/otp/otp_validator");
-const { fetch_otp } = require("./queries");
+const { fetch_otp, insert_user_in_customer } = require("./queries");
 
 module.exports.otp = async (req, res) => {
   // assign inputs
@@ -49,6 +51,27 @@ module.exports.otp = async (req, res) => {
     return failure(400, "Invalid otp.", res);
   }
 
-  // if otp match return success
-  return success(200, "Login successful.", res);
+  // if mode is customer then insert user in customer
+  if (inputs.mode == "customer") {
+    await DBService.executeStatement(insert_user_in_customer(inputs.mobile));
+  }
+
+  // if otp matches then generate the jwt token
+  jwt.sign(
+    inputs,
+    config.secret_key,
+    { expiresIn: config.key_expiry },
+    (err, token) => {
+      if (err) {
+        console.log("Error while jwt sign ::: ", err);
+        return failure(400, "Internal server error, Try again later.", res);
+      } else {
+        const response = {
+          message: "Login successful.",
+          token: token,
+        };
+        return success(200, response, res);
+      }
+    }
+  );
 };
