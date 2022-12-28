@@ -1,0 +1,57 @@
+const DBService = require("../../../utils/DB/service");
+const { parseResponse } = require("../../../utils/helper");
+const {
+  success,
+  failure,
+  validation_faliure,
+} = require("../../../utils/response");
+const {
+  fetch_data_validator,
+} = require("../../../validators/customer/fetch_data/fetch_data_validator");
+const {
+  fetch_data_transformer,
+} = require("../../../transformers/customer/fetch_data/fetch_data_transformer");
+const { fetch_customer_data_from_table } = require("./queries");
+
+module.exports.fetch_data = async (req, res) => {
+  // assign inputs
+  const inputs = req.query;
+
+  // if no attribute found
+  if (Object.getOwnPropertyNames(inputs).length == 0) {
+    return failure(
+      400,
+      "Invalid, Request should contain atleast one query params.",
+      res
+    );
+  }
+
+  // validate payload
+  const errors = await fetch_data_validator(inputs);
+  if (Object.keys(errors).length > 0 && errors.constructor === Object) {
+    return validation_faliure(
+      422,
+      "The request should not contain invalid data.",
+      errors,
+      res
+    );
+  }
+
+  // fetch customer details from customer table
+  const result = parseResponse(
+    await DBService.executeStatement(
+      fetch_customer_data_from_table(inputs.mobile)
+    )
+  );
+
+  // if no data found
+  if (Object.getOwnPropertyNames(result).length == 0) {
+    return failure(400, "Invalid mobile.", res);
+  }
+
+  // transform result
+  const transformer = fetch_data_transformer(result);
+
+  // return success
+  return success(200, transformer, res);
+};
