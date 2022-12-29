@@ -12,11 +12,12 @@ app.use(body_parser.urlencoded({ extended: true }));
 // routes
 const login_route = require("./src/handlers/login/login_handler");
 const shop_route = require("./src/handlers/shop/shop_handler");
+const customer_route = require("./src/handlers/customer/customer_handler");
 
 // use routes
 app.use(login_route);
 app.use(shop_route);
-
+app.use(customer_route);
 
 // app server
 app.listen(SERVER_PORT, () => {

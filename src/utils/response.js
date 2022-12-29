@@ -29,6 +29,11 @@ module.exports = {
       };
     }
 
+    // if there is no meta
+    if (!meta) {
+      delete obj["meta"];
+    }
+
     // return response
     return res.send(obj);
   },
