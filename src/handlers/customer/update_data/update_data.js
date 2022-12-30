@@ -36,6 +36,13 @@ module.exports.update_data = async (req, res) => {
   // update customer details in customer table
   await DBService.executeStatement(update_customer_data_in_table(inputs));
 
+  // initilize response data
+  const response = {
+    name: inputs.name,
+    email: inputs.email,
+    gender: inputs.gender,
+  };
+
   // return success
-  return success(200, "Profile updated.", res);
+  return success(200, response, res);
 };
