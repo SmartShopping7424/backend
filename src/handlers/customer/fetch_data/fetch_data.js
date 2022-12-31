@@ -50,7 +50,7 @@ module.exports.fetch_data = async (req, res) => {
   }
 
   // transform result
-  const transformer = fetch_data_transformer(result);
+  const transformer = await fetch_data_transformer(result);
 
   // return success
   return success(200, transformer, res);
