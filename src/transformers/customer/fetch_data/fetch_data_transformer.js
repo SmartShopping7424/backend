@@ -3,7 +3,7 @@
  * @param {*} raw_data
  * @returns actual data
  */
-module.exports.fetch_data_transformer = (raw_data) => {
+module.exports.fetch_data_transformer = async (raw_data) => {
   // if raw data is array
   if (Array.isArray(raw_data)) {
     let res = [];
