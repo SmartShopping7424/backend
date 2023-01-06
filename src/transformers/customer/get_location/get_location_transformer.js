@@ -3,7 +3,7 @@
  * @param {*} raw_data
  * @returns actual data
  */
-module.exports.fetch_data_transformer = async (raw_data) => {
+module.exports.get_location_transformer = async (raw_data) => {
   // if raw data is array
   if (Array.isArray(raw_data)) {
     let res = [];
@@ -24,9 +24,8 @@ module.exports.fetch_data_transformer = async (raw_data) => {
 const transform_data = (raw) => {
   return {
     id: raw.hasOwnProperty("id") ? raw.id : null,
-    mobile: raw.hasOwnProperty("mobile") ? raw.mobile : null,
-    name: raw.hasOwnProperty("name") ? raw.name : null,
-    email: raw.hasOwnProperty("email") ? raw.email : null,
-    gender: raw.hasOwnProperty("gender") ? raw.gender : null,
+    shop_id: raw.hasOwnProperty("shop_id") ? raw.shop_id : null,
+    shop_name: raw.hasOwnProperty("shop_name") ? raw.shop_name : null,
+    distance: raw.hasOwnProperty("distance") ? raw.distance : null,
   };
 };
