@@ -7,7 +7,7 @@ module.exports.scan_item_transformer = async (raw_data) => {
   // if raw data is array
   if (Array.isArray(raw_data)) {
     let res = [];
-    raw_data.map(() => {
+    raw_data.map((data) => {
       let obj = transform_data(data);
       res.push(obj);
     });
