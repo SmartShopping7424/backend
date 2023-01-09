@@ -1,8 +1,8 @@
 const dbConfig = {
-  host: "68.178.166.24",
-  user: "devops_abhay",
+  host: "68.178.166.189",
+  user: "dragmart_abhay",
   password: "Abhay@123",
-  database: "devops_dragmart",
+  database: "dragmart_prod",
   port: 3306,
 };
 
