@@ -1,3 +1,6 @@
+const { Console } = require("console");
+const fs = require("fs");
+
 module.exports = {
   // parse resposne from query
   parseResponse(query_data) {
@@ -21,5 +24,19 @@ module.exports = {
     return Math.floor(
       Math.pow(10, length - 1) + Math.random() * 9 * Math.pow(10, length - 1)
     );
+  },
+
+  // store logs
+  storeLogs(type, msg) {
+    const myLogger = new Console({
+      stdout: fs.createWriteStream("normalLog.txt"),
+      stderr: fs.createWriteStream("errLog.txt"),
+    });
+
+    if (type == 1) {
+      myLogger.log(msg);
+    } else {
+      myLogger.error(msg);
+    }
   },
 };
