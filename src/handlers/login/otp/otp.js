@@ -69,7 +69,7 @@ module.exports.otp = async (req, res) => {
     // if otp matches then generate the jwt token
     jwt.sign(
       inputs,
-      config.secret_key.toString("utf-8"),
+      config.secret_key,
       { expiresIn: config.key_expiry },
       (err, token) => {
         if (err) {
