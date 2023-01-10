@@ -1,7 +1,8 @@
 const DBService = require("../../../utils/DB/service");
 const jwt = require("jsonwebtoken");
 const config = require("../../../config/settings");
-const { parseResponse, storeLogs } = require("../../../utils/helper");
+const { parseResponse } = require("../../../utils/helper");
+const { logger } = require("../../../utils/logger");
 const {
   success,
   failure,
@@ -63,10 +64,10 @@ module.exports.otp = async (req, res) => {
     { expiresIn: config.key_expiry },
     (err, token) => {
       if (err) {
-        storeLogs(0, `Error while jwt sign ::: ${err}`);
+        logger.info(`Error while jwt sign ::: ${err}`);
         return failure(400, "Internal server error, Try again later.", res);
       } else {
-        storeLogs(1, "Successful Login.");
+        logger.info(`Successful login`);
         const response = {
           message: "Login successful.",
           token: token,
