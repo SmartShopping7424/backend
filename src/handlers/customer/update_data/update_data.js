@@ -1,4 +1,5 @@
 const DBService = require("../../../utils/DB/service");
+const { logger } = require("../../../utils/logger");
 const {
   success,
   failure,
@@ -10,39 +11,44 @@ const {
 const { update_customer_data_in_table } = require("./queries");
 
 module.exports.update_data = async (req, res) => {
-  // assign inputs
-  const inputs = req.body;
+  try {
+    // assign inputs
+    const inputs = req.body;
 
-  // if no attribute found
-  if (Object.getOwnPropertyNames(inputs).length == 0) {
-    return failure(
-      400,
-      "Invalid payload, Request should contain atleast one attribute.",
-      res
-    );
+    // if no attribute found
+    if (Object.getOwnPropertyNames(inputs).length == 0) {
+      return failure(
+        400,
+        "Invalid payload, Request should contain atleast one attribute.",
+        res
+      );
+    }
+
+    // validate payload
+    const errors = await update_data_validator(inputs);
+    if (Object.keys(errors).length > 0 && errors.constructor === Object) {
+      return validation_faliure(
+        422,
+        "The request should not contain invalid data.",
+        errors,
+        res
+      );
+    }
+
+    // update customer details in customer table
+    await DBService.executeStatement(update_customer_data_in_table(inputs));
+
+    // initilize response data
+    const response = {
+      name: inputs.name,
+      email: inputs.email,
+      gender: inputs.gender,
+    };
+
+    // return success
+    return success(200, response, res);
+  } catch (e) {
+    logger.error("Error in customer update data ::: ", e);
+    return failure(400, "Internal server error.", res);
   }
-
-  // validate payload
-  const errors = await update_data_validator(inputs);
-  if (Object.keys(errors).length > 0 && errors.constructor === Object) {
-    return validation_faliure(
-      422,
-      "The request should not contain invalid data.",
-      errors,
-      res
-    );
-  }
-
-  // update customer details in customer table
-  await DBService.executeStatement(update_customer_data_in_table(inputs));
-
-  // initilize response data
-  const response = {
-    name: inputs.name,
-    email: inputs.email,
-    gender: inputs.gender,
-  };
-
-  // return success
-  return success(200, response, res);
 };

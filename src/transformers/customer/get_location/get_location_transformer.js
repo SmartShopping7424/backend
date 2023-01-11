@@ -26,6 +26,12 @@ const transform_data = (raw) => {
     id: raw.hasOwnProperty("id") ? raw.id : null,
     shop_id: raw.hasOwnProperty("shop_id") ? raw.shop_id : null,
     shop_name: raw.hasOwnProperty("shop_name") ? raw.shop_name : null,
+    shop_latitude: raw.hasOwnProperty("shop_latitude")
+      ? raw.shop_latitude
+      : null,
+    shop_longitude: raw.hasOwnProperty("shop_longitude")
+      ? raw.shop_longitude
+      : null,
     distance: raw.hasOwnProperty("distance") ? raw.distance : null,
   };
 };
