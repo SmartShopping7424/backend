@@ -32,7 +32,7 @@ module.exports.scan_product = async (req, res) => {
 
     // validate payload
     const errors = await scan_product_validator(inputs);
-    if (Object.keys(errors).length > 0 && errors.constructor === Object) {
+    if (Object.keys(errors).length > 0 && errors.constructor == Object) {
       return validation_faliure(
         422,
         "The request should not contain invalid data.",
