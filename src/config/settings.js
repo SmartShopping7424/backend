@@ -18,6 +18,8 @@ const config = {
     },
   },
   page_size: 10,
+  server_key:
+    "AAAAZVLkznM:APA91bHBFCqzOLzC9-PLvc_uMluFlzgb5OEjF3GiAbz3-EHeWxbmTtjCf1Ac8_EJdlztfrHNvxtUeVL9rBByrWnEL4PjOEHGZ4subGkVwkox5p3Rte0zJTKn3HT_kpftTEUTohyU1xq0",
 };
 
 module.exports = config;
