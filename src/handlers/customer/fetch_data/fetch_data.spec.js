@@ -1,15 +1,20 @@
 const request = require("supertest");
 const db_service = require("../../../utils/db/service");
-const server = require("../../../../app");
 const token = "test";
 const sample_output = [{ id: 1, name: "Test", mobile: "9191919191" }];
 
 // test case for the /customer get api
 describe("Test case for the /customer get api", () => {
-  // close the server
-  afterAll((done) => {
-    server.close();
-    done();
+  let server;
+
+  // loading the server
+  beforeEach(() => {
+    server = require("../../../../app");
+  });
+
+  // closing the server
+  afterEach(async () => {
+    await server.close();
   });
 
   // code 200, if all input valid
