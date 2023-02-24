@@ -36,7 +36,7 @@ module.exports.update_data_validator = async (input) => {
             errors[key].push(
               "Invalid name, Cannot greater than 255 characters."
             );
-          } else if (value < 1) {
+          } else if (value.length < 1) {
             errors[key].push("Invalid name, Cannot less than 1 character.");
           }
           break;

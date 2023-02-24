@@ -30,7 +30,7 @@ module.exports.create_id_validator = async (input) => {
             errors[key].push(
               "Invalid employee_id, Cannot greater than 255 characters."
             );
-          } else if (value < 1) {
+          } else if (value.length < 1) {
             errors[key].push(
               "Invalid employee_id, Cannot less than 1 character."
             );
@@ -41,7 +41,7 @@ module.exports.create_id_validator = async (input) => {
             errors[key].push(
               "Invalid password, Cannot greater than 8 characters."
             );
-          } else if (value < 1) {
+          } else if (value.length < 1) {
             errors[key].push("Invalid password, Cannot less than 1 character.");
           }
           break;
@@ -50,7 +50,7 @@ module.exports.create_id_validator = async (input) => {
             errors[key].push(
               "Invalid shop_id, Cannot greater than 255 characters."
             );
-          } else if (value < 1) {
+          } else if (value.length < 1) {
             errors[key].push("Invalid shop_id, Cannot less than 1 character.");
           }
           break;

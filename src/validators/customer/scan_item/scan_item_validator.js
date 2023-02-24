@@ -30,7 +30,7 @@ module.exports.scan_item_validator = async (input) => {
             errors[key].push(
               "Invalid shop_id, Cannot greater than 255 characters."
             );
-          } else if (value < 1) {
+          } else if (value.length < 1) {
             errors[key].push("Invalid shop_id, Cannot less than 1 character.");
           }
           break;
@@ -39,7 +39,7 @@ module.exports.scan_item_validator = async (input) => {
             errors[key].push(
               "Invalid product_barcode, Cannot greater than 255 characters."
             );
-          } else if (value < 1) {
+          } else if (value.length < 1) {
             errors[key].push(
               "Invalid product_barcode, Cannot less than 1 character."
             );
