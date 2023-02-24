@@ -23,6 +23,8 @@ app.use(shop_route);
 app.use(customer_route);
 
 // app server
-app.listen(SERVER_PORT, () => {
+const server = app.listen(SERVER_PORT, () => {
   logger.info(`Server is running on port ${SERVER_PORT}`);
 });
+
+module.exports = server;

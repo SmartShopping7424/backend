@@ -50,4 +50,9 @@ module.exports = {
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   },
+
+  // generate payment id
+  generate_payment_id() {
+    return `PID${Math.floor(new Date().valueOf() * Math.random())}`;
+  },
 };

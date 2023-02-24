@@ -37,7 +37,7 @@ module.exports.fetch_cart_validator = async (input) => {
               errors[key].push(
                 "Invalid shop_id, Cannot greater than 255 characters."
               );
-            } else if (value < 1) {
+            } else if (value.length < 1) {
               errors[key].push(
                 "Invalid shop_id, Cannot less than 1 character."
               );

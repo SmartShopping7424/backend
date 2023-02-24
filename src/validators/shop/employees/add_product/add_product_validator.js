@@ -45,7 +45,7 @@ module.exports.add_product_validator = async (input) => {
             errors[key].push(
               "Invalid employee_id, Cannot greater than 255 characters."
             );
-          } else if (value < 1) {
+          } else if (value.length < 1) {
             errors[key].push(
               "Invalid employee_id, Cannot less than 1 character."
             );
@@ -56,7 +56,7 @@ module.exports.add_product_validator = async (input) => {
             errors[key].push(
               "Invalid shop_id, Cannot greater than 255 characters."
             );
-          } else if (value < 1) {
+          } else if (value.length < 1) {
             errors[key].push("Invalid shop_id, Cannot less than 1 character.");
           }
           break;
@@ -65,7 +65,7 @@ module.exports.add_product_validator = async (input) => {
             errors[key].push(
               "Invalid product_barcode, Cannot greater than 255 characters."
             );
-          } else if (value < 1) {
+          } else if (value.length < 1) {
             errors[key].push(
               "Invalid product_barcode, Cannot less than 1 character."
             );
@@ -76,7 +76,7 @@ module.exports.add_product_validator = async (input) => {
             errors[key].push(
               "Invalid product_name, Cannot greater than 255 characters."
             );
-          } else if (value < 1) {
+          } else if (value.length < 1) {
             errors[key].push(
               "Invalid product_name, Cannot less than 1 character."
             );
@@ -87,7 +87,7 @@ module.exports.add_product_validator = async (input) => {
             errors[key].push(
               "Invalid product_category, Cannot greater than 255 characters."
             );
-          } else if (value < 1) {
+          } else if (value.length < 1) {
             errors[key].push(
               "Invalid product_category, Cannot less than 1 character."
             );
@@ -98,7 +98,7 @@ module.exports.add_product_validator = async (input) => {
             errors[key].push(
               "Invalid product_sub_category, Cannot greater than 255 characters."
             );
-          } else if (value < 1) {
+          } else if (value.length < 1) {
             errors[key].push(
               "Invalid product_sub_category, Cannot less than 1 character."
             );
@@ -120,7 +120,7 @@ module.exports.add_product_validator = async (input) => {
               errors[key].push(
                 "Invalid product_image, Cannot greater than 255 characters."
               );
-            } else if (value < 1) {
+            } else if (value.length < 1) {
               errors[key].push(
                 "Invalid product_image, Cannot less than 1 character."
               );

@@ -3,10 +3,10 @@
  * @param {*} input
  * @returns success or error
  */
-module.exports.order_status_validator = async (input) => {
+module.exports.pay_at_counter_validator = async (input) => {
   // define variables
   var errors = {};
-  var required = ["order_id"];
+  var required = ["mobile", "shop_id", "amount"];
 
   // check if any require key is missing from input payload
   required.map((key) => {
@@ -25,13 +25,24 @@ module.exports.order_status_validator = async (input) => {
 
       // switch case on the basis of key
       switch (key) {
-        case "order_id":
+        case "mobile":
+          var number_format = /^[6-9][0-9]{9}$/;
+          if (!number_format.test(value)) {
+            errors[key].push("Invalid mobile in query params.");
+          }
+          break;
+        case "shop_id":
           if (value.length > 255) {
             errors[key].push(
-              "Invalid order_id, Cannot greater than 255 characters."
+              "Invalid shop_id, Cannot greater than 255 characters."
             );
           } else if (value.length < 1) {
-            errors[key].push("Invalid order_id, Cannot less than 1 character.");
+            errors[key].push("Invalid shop_id, Cannot less than 1 character.");
+          }
+          break;
+        case "amount":
+          if (!value || parseFloat(value) <= 0 || isNaN(parseFloat(value))) {
+            errors[key].push("Invalid amount.");
           }
           break;
         default:
