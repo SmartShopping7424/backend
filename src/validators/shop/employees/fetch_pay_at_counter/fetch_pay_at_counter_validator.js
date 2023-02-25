@@ -3,10 +3,10 @@
  * @param {*} input
  * @returns success or error
  */
-module.exports.create_id_validator = async (input) => {
+module.exports.fetch_pay_at_counter_validator = async (input) => {
   // define variables
   var errors = {};
-  var required = ["employee_id", "password", "shop_id", "type"];
+  var required = ["employee_id", "shop_id"];
 
   // check if any require key is missing from input payload
   required.map((key) => {
@@ -36,15 +36,6 @@ module.exports.create_id_validator = async (input) => {
             );
           }
           break;
-        case "password":
-          if (value.length > 8) {
-            errors[key].push(
-              "Invalid password, Cannot greater than 8 characters."
-            );
-          } else if (value.length < 1) {
-            errors[key].push("Invalid password, Cannot less than 1 character.");
-          }
-          break;
         case "shop_id":
           if (value.length > 255) {
             errors[key].push(
@@ -52,11 +43,6 @@ module.exports.create_id_validator = async (input) => {
             );
           } else if (value.length < 1) {
             errors[key].push("Invalid shop_id, Cannot less than 1 character.");
-          }
-          break;
-        case "type":
-          if (!value || !(value == 1 || value == 0)) {
-            errors[key].push("Invalid type in the payload.");
           }
           break;
         default:

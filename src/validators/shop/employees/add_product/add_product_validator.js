@@ -37,6 +37,8 @@ module.exports.add_product_validator = async (input) => {
     if (input.hasOwnProperty(key)) {
       // assign the value of key
       const value = String(input[key]).trim();
+      const urlRegex =
+        /^(http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/g;
 
       // switch case on the basis of key
       switch (key) {
@@ -116,7 +118,9 @@ module.exports.add_product_validator = async (input) => {
           break;
         case "product_image":
           if (value) {
-            if (value.length > 255) {
+            if (value.match(urlRegex) == null) {
+              errors[key].push("Invalid product_image, url is not valid.");
+            } else if (value.length > 255) {
               errors[key].push(
                 "Invalid product_image, Cannot greater than 255 characters."
               );

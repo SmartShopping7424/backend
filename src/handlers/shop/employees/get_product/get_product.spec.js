@@ -1,15 +1,15 @@
 const request = require("supertest");
-const db_service = require("../../../utils/db/service");
+const db_service = require("../../../../utils/db/service");
 const token = "test";
 const sample_output = [{}];
 
-// test case for the /customer/location post api
-describe("Test case for the /customer/location post api", () => {
+// test case for the /shop/employee/get_product post api
+describe("Test case for the /shop/employee/get_product post api", () => {
   let server;
 
   // loading the server
   beforeEach(() => {
-    server = require("../../../../app");
+    server = require("../../../../../app");
   });
 
   // closing the server
@@ -20,12 +20,12 @@ describe("Test case for the /customer/location post api", () => {
   // code 200, if all input valid
   it("Should return 200, if payload is valid", async () => {
     var body = {
-      latitude: "23.8787",
-      longitude: "77.8787",
+      employee_id: "AAA",
+      shop_id: "BBB",
     };
     jest.spyOn(db_service, "excute_statement").mockResolvedValue(sample_output);
     const response = await request(server)
-      .post("/customer/location")
+      .post("/shop/employee/get_product")
       .send(body)
       .set("Authorization", `Bearer ${token}`);
     expect(response._body.code).toBe(200);
@@ -36,67 +36,67 @@ describe("Test case for the /customer/location post api", () => {
     var body = {};
     jest.spyOn(db_service, "excute_statement").mockResolvedValue(sample_output);
     const response = await request(server)
-      .post("/customer/location")
+      .post("/shop/employee/get_product")
       .send(body)
       .set("Authorization", `Bearer ${token}`);
     expect(response._body.code).toBe(400);
   });
 
-  // code 422, if latitude not found in paylaod
-  it("Should return 422, if latitude not found in payload", async () => {
+  // code 422, if employee_id not found in paylaod
+  it("Should return 422, if employee_id not found in payload", async () => {
     var body = {
-      latitude: "23.8787",
-      longitude: "77.8787",
+      employee_id: "AAA",
+      shop_id: "BBB",
     };
-    delete body["latitude"];
+    delete body["employee_id"];
     jest.spyOn(db_service, "excute_statement").mockResolvedValue(sample_output);
     const response = await request(server)
-      .post("/customer/location")
+      .post("/shop/employee/get_product")
       .send(body)
       .set("Authorization", `Bearer ${token}`);
     expect(response._body.code).toBe(422);
   });
 
-  // code 422, if longitude not found in paylaod
-  it("Should return 422, if longitude not found in payload", async () => {
+  // code 422, if shop_id not found in paylaod
+  it("Should return 422, if shop_id not found in payload", async () => {
     var body = {
-      latitude: "23.8787",
-      longitude: "77.8787",
+      employee_id: "AAA",
+      shop_id: "BBB",
     };
-    delete body["longitude"];
+    delete body["shop_id"];
     jest.spyOn(db_service, "excute_statement").mockResolvedValue(sample_output);
     const response = await request(server)
-      .post("/customer/location")
+      .post("/shop/employee/get_product")
       .send(body)
       .set("Authorization", `Bearer ${token}`);
     expect(response._body.code).toBe(422);
   });
 
-  // code 422, if latitude is invalid in paylaod
-  it("Should return 422, if latitude not found in payload", async () => {
+  // code 422, if employee_id is invalid in paylaod
+  it("Should return 422, if employee_id is invalid in payload", async () => {
     var body = {
-      latitude: "AAA",
-      longitude: "77.8787",
+      employee_id: "AAA",
+      shop_id: "BBB",
     };
-    delete body["latitude"];
+    body["employee_id"] = "";
     jest.spyOn(db_service, "excute_statement").mockResolvedValue(sample_output);
     const response = await request(server)
-      .post("/customer/location")
+      .post("/shop/employee/get_product")
       .send(body)
       .set("Authorization", `Bearer ${token}`);
     expect(response._body.code).toBe(422);
   });
 
-  // code 422, if longitude is invalid in paylaod
-  it("Should return 422, if longitude not found in payload", async () => {
+  // code 422, if shop_id is invalid in paylaod
+  it("Should return 422, if shop_id is invalid in payload", async () => {
     var body = {
-      latitude: "23.8787",
-      longitude: "AAA",
+      employee_id: "AAA",
+      shop_id: "BBB",
     };
-    delete body["longitude"];
+    body["shop_id"] = "";
     jest.spyOn(db_service, "excute_statement").mockResolvedValue(sample_output);
     const response = await request(server)
-      .post("/customer/location")
+      .post("/shop/employee/get_product")
       .send(body)
       .set("Authorization", `Bearer ${token}`);
     expect(response._body.code).toBe(422);

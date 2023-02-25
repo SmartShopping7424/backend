@@ -55,7 +55,7 @@ module.exports.login_validator = async (input) => {
           }
           break;
         case "type":
-          if (!(value == 1 || value == 0)) {
+          if (!value || !(value == 1 || value == 0)) {
             errors[key].push("Invalid type in the payload.");
           }
           break;

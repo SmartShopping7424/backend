@@ -7,19 +7,19 @@ const {
   validation_faliure,
 } = require("../../../../utils/response");
 const {
-  get_product_validator,
-} = require("../../../../validators/shop/employees/get_product/get_product_validator");
+  fetch_pay_at_counter_validator,
+} = require("../../../../validators/shop/employees/fetch_pay_at_counter/fetch_pay_at_counter_validator");
 const {
   check_shop_id,
   check_employee_id_against_shop,
-  fetch_product,
+  fetch_pay_at_counter_from_table,
 } = require("./queries");
 const config = require("../../../../config/settings");
 const {
-  get_product_transformer,
-} = require("../../../../transformers/shop/get_product/get_product_transformer");
+  fetch_pay_at_counter_transformer,
+} = require("../../../../transformers/shop/fetch_pay_at_counter/fetch_pay_at_counter_transformer");
 
-module.exports.get_product = async (req, res) => {
+module.exports.fetch_pay_at_counter = async (req, res) => {
   try {
     // assign inputs
     const inputs = req.body;
@@ -34,7 +34,7 @@ module.exports.get_product = async (req, res) => {
     }
 
     // validate payload
-    const errors = await get_product_validator(inputs);
+    const errors = await fetch_pay_at_counter_validator(inputs);
     if (Object.keys(errors).length > 0 && errors.constructor == Object) {
       return validation_faliure(
         422,
@@ -95,7 +95,7 @@ module.exports.get_product = async (req, res) => {
     // fetch product
     result = parse_response(
       await db_service.excute_statement(
-        fetch_product(inputs.shop_id, limit, offset)
+        fetch_pay_at_counter_from_table(inputs.shop_id, limit, offset)
       )
     );
 
@@ -105,7 +105,7 @@ module.exports.get_product = async (req, res) => {
     }
 
     // transform the product data
-    const transformer = await get_product_transformer(
+    const transformer = await fetch_pay_at_counter_transformer(
       Object.keys(result).length == 0 ? [] : result
     );
 
@@ -127,7 +127,7 @@ module.exports.get_product = async (req, res) => {
       meta
     );
   } catch (e) {
-    logger.error("Error in shop employee get product ::: ", e);
+    logger.error("Error in shop employee fetch pay at counter ::: ", e);
     return failure(400, "Internal server error.", res);
   }
 };
