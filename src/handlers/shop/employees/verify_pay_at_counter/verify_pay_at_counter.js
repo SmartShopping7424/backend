@@ -7,19 +7,15 @@ const {
   validation_faliure,
 } = require("../../../../utils/response");
 const {
-  get_product_validator,
-} = require("../../../../validators/shop/employees/get_product/get_product_validator");
+  verify_pay_at_counter_validator,
+} = require("../../../../validators/shop/employees/verify_pay_at_counter.js/verify_pay_at_counter_validator");
 const {
   check_shop_id,
   check_employee_id_against_shop,
-  fetch_product,
+  verify_pay_at_counter_from_table,
 } = require("./queries");
-const config = require("../../../../config/settings");
-const {
-  get_product_transformer,
-} = require("../../../../transformers/shop/get_product/get_product_transformer");
 
-module.exports.get_product = async (req, res) => {
+module.exports.verify_pay_at_counter = async (req, res) => {
   try {
     // assign inputs
     const inputs = req.body;
@@ -34,7 +30,7 @@ module.exports.get_product = async (req, res) => {
     }
 
     // validate payload
-    const errors = await get_product_validator(inputs);
+    const errors = await verify_pay_at_counter_validator(inputs);
     if (Object.keys(errors).length > 0 && errors.constructor == Object) {
       return validation_faliure(
         422,
@@ -76,58 +72,19 @@ module.exports.get_product = async (req, res) => {
       return failure(400, "Invalid employee id.", res);
     }
 
-    // intilize page and page size
-    let initial_page = 1;
-    let page_size = config.page_size;
-    let page = initial_page;
-
-    // fetch page from query parameter
-    if (req.query) {
-      if (req.query.page) {
-        page = req.query.page;
-      }
-    }
-
-    // calculate limit and offset for pagination
-    const limit = page_size;
-    const offset = page_size * page - page_size;
-
-    // fetch product
-    result = parse_response(
-      await db_service.excute_statement(
-        fetch_product(inputs.shop_id, limit, offset)
+    // verify pay at counter status
+    await db_service.excute_statement(
+      verify_pay_at_counter_from_table(
+        inputs.employee_id,
+        inputs.shop_id,
+        inputs.payment_id
       )
     );
 
-    // if result not found
-    if (!result) {
-      return failure(500, "Something went wrong, Please try again later.", res);
-    }
-
-    // transform the product data
-    const transformer = await get_product_transformer(
-      Object.keys(result).length == 0 ? [] : result
-    );
-
-    // pagination data
-    const meta = {
-      pagination: {
-        current_page: parseInt(page),
-        count: transformer.length,
-        starts_from: initial_page,
-        per_page: parseInt(limit),
-      },
-    };
-
     // return success
-    return success(
-      200,
-      transformer.length == undefined ? [transformer] : transformer,
-      res,
-      meta
-    );
+    return success(200, "Payment successfully updated.", res);
   } catch (e) {
-    logger.error("Error in shop employee get product ::: ", e);
+    logger.error("Error in shop employee verify pay at counter ::: ", e);
     return failure(400, "Internal server error.", res);
   }
 };
