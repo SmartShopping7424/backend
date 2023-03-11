@@ -8,11 +8,11 @@ const {
 } = require("../../../utils/response");
 const {
   fetch_data_validator,
-} = require("../../../validators/customer/fetch_data/fetch_data_validator");
+} = require("../../../validators/shop/fetch_data/fetch_data_validator");
 const {
   fetch_data_transformer,
-} = require("../../../transformers/customer/fetch_data/fetch_data_transformer");
-const { fetch_customer_data_from_table } = require("./queries");
+} = require("../../../transformers/shop/fetch_data/fetch_data_transformer");
+const { fetch_shop_data_from_table } = require("./queries");
 
 module.exports.fetch_data = async (req, res) => {
   try {
@@ -42,7 +42,7 @@ module.exports.fetch_data = async (req, res) => {
     // fetch customer details from customer table
     const result = parse_response(
       await db_service.excute_statement(
-        fetch_customer_data_from_table(inputs.mobile)
+        fetch_shop_data_from_table(inputs.mobile)
       )
     );
 
@@ -62,7 +62,7 @@ module.exports.fetch_data = async (req, res) => {
     // return success
     return success(200, transformer, res);
   } catch (e) {
-    logger.error("Error in customer fetch data ::: ", e);
+    logger.error("Error in shop fetch data ::: ", e);
     return failure(400, "Internal server error.", res);
   }
 };

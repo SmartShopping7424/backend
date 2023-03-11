@@ -15,6 +15,7 @@ const {
   pay_at_counter_status,
 } = require("./pay_at_counter_status/pay_at_counter_status");
 
+// all the customer routes
 router.post("/customer", verify_token, update_data);
 router.get("/customer", verify_token, fetch_data);
 router.post("/customer/scan", verify_token, scan_item);

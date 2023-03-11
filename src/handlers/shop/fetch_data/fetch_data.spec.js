@@ -1,10 +1,10 @@
 const request = require("supertest");
 const db_service = require("../../../utils/db/service");
 const token = "test";
-const sample_output = [{ id: 1, name: "Test", mobile: "9191919191" }];
+const sample_output = [{ id: 1, shop_name: "Test", shop_mobile: "9999999999" }];
 
-// test case for the /customer get api
-describe("Test case for the /customer get api", () => {
+// test case for the /shop get api
+describe("Test case for the /shop get api", () => {
   let server;
 
   // loading the server
@@ -20,11 +20,11 @@ describe("Test case for the /customer get api", () => {
   // code 200, if all input valid
   it("Should return 200, if query parameter is valid", async () => {
     var query_parameter = {
-      mobile: "9191919191",
+      mobile: "9999999999",
     };
     jest.spyOn(db_service, "excute_statement").mockResolvedValue(sample_output);
     const response = await request(server)
-      .get("/customer")
+      .get("/shop")
       .query(query_parameter)
       .set("Authorization", `Bearer ${token}`);
     expect(response._body.code).toBe(200);
@@ -35,7 +35,7 @@ describe("Test case for the /customer get api", () => {
     var query_parameter = {};
     jest.spyOn(db_service, "excute_statement").mockResolvedValue(sample_output);
     const response = await request(server)
-      .get("/customer")
+      .get("/shop")
       .query(query_parameter)
       .set("Authorization", `Bearer ${token}`);
     expect(response._body.code).toBe(400);
@@ -44,11 +44,11 @@ describe("Test case for the /customer get api", () => {
   // code 422, if mobile is invalid
   it("Should return 422, if mobile is invalid", async () => {
     var query_parameter = {
-      mobile: "91919191",
+      mobile: "99999999",
     };
     jest.spyOn(db_service, "excute_statement").mockResolvedValue(sample_output);
     const response = await request(server)
-      .get("/customer")
+      .get("/shop")
       .query(query_parameter)
       .set("Authorization", `Bearer ${token}`);
     expect(response._body.code).toBe(422);
@@ -57,13 +57,13 @@ describe("Test case for the /customer get api", () => {
   // code 422, if mobile not found
   it("Should return 422, if mobile not found", async () => {
     var query_parameter = {
-      mobile: "9191919191",
+      mobile: "9999999999",
       other_data: "",
     };
     delete query_parameter["mobile"];
     jest.spyOn(db_service, "excute_statement").mockResolvedValue(sample_output);
     const response = await request(server)
-      .get("/customer")
+      .get("/shop")
       .query(query_parameter)
       .set("Authorization", `Bearer ${token}`);
     expect(response._body.code).toBe(422);
