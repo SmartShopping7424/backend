@@ -8,6 +8,7 @@ const { get_product } = require("./employees/get_product/get_product");
 const { scan_product } = require("./employees/scan_product/scan_product");
 const { scan_order } = require("./employees/scan_order/scan_order");
 const { verify_order } = require("./employees/verify_order/verify_order");
+const { fetch_data } = require("./fetch_data/fetch_data");
 const {
   fetch_pay_at_counter,
 } = require("./employees/fetch_pay_at_counter/fetch_pay_at_counter");
@@ -15,6 +16,8 @@ const {
   verify_pay_at_counter,
 } = require("./employees/verify_pay_at_counter/verify_pay_at_counter");
 
+// all the shop routes
+router.get("/shop", verify_token, fetch_data);
 router.post("/shop/employee/create_id", verify_token, create_id);
 router.post("/shop/employee/login", login);
 router.post("/shop/employee/add_product", verify_token, add_product);
